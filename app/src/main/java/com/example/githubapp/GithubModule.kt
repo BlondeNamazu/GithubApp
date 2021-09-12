@@ -4,15 +4,17 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object GithubModule {
+    @ExperimentalSerializationApi
     @Singleton
     @Provides
     fun provideGithubRetrofit(): Retrofit {
@@ -26,6 +28,14 @@ object GithubModule {
                 }.asConverterFactory("application/json".toMediaType())
             )
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideGithubApi(
+        retrofit: Retrofit
+    ): GithubApi {
+        return retrofit.create(GithubApi::class.java)
     }
 
 }

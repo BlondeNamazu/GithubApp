@@ -2,9 +2,9 @@ package com.example.githubapp
 
 import javax.inject.Inject
 
-class GithubUsecase @Inject constructor(
+class GithubUseCase @Inject constructor(
     private val githubRepository: GithubRepository
 ) {
-    suspend fun getUserRepositoryList(userName: String): Result<List<GithubRepositoryEntity>> =
+    suspend fun getUserRepositoryList(userName: String): Result<List<GithubRepositoryResponse>> =
         githubRepository.getUserRepositoryList(userName)
 }
