@@ -40,18 +40,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ShowFirstRepositoryName(repositories: List<GithubRepositoryEntity>) {
-    if (repositories.isEmpty()) Text(text = "Repository not found")
-    else Text(text = repositories.first().name)
+fun RepositoryList(repositories: List<GithubRepositoryEntity>) {
+    Column {
+        repositories.map {
+            Text(it.name)
+        }
+    }
 }
 
 @Composable
 fun ViewAndRefreshButton(repositories: List<GithubRepositoryEntity>, onClickListener: () -> Unit) {
     Column {
-        ShowFirstRepositoryName(repositories = repositories)
         Button(onClick = onClickListener) {
             Text("Update Repositories")
         }
+        RepositoryList(repositories = repositories)
     }
 }
 

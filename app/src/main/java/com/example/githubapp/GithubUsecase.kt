@@ -5,6 +5,6 @@ import javax.inject.Inject
 class GithubUseCase @Inject constructor(
     private val githubRepository: GithubRepository
 ) {
-    suspend fun getUserRepositoryList(userName: String): Result<List<GithubRepositoryResponse>> =
+    suspend fun getUserRepositoryList(userName: String): Result<List<GithubRepositoryEntity>> =
         githubRepository.getUserRepositoryList(userName)
 }

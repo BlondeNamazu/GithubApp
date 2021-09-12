@@ -17,9 +17,9 @@ class GithubViewModel @Inject constructor(
     fun getUserRepositoryList(userName: String) {
         viewModelScope.launch {
             val result = githubUseCase.getUserRepositoryList(userName)
-            if(result.isSuccess){
+            if (result.isSuccess) {
                 val res = result.getOrNull() ?: return@launch
-                _userRepositoryList.postValue(res.map{it.toEntity()})
+                _userRepositoryList.postValue(res)
             }
         }
     }
