@@ -11,7 +11,7 @@ data class GithubRepositoryResponse(
     @SerialName("html_url") val htmlUrl: String,
     @SerialName("url") val apiUrl: String,
 ) {
-    fun toEntity(): GithubRepository = GithubRepository(
+    fun toEntity(): GithubRepositoryEntity = GithubRepositoryEntity(
         id = id,
         name = name,
         htmlUrl = Uri.parse(htmlUrl),

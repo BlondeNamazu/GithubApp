@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface GithubApi {
-    @GET("/users/{username}/repos)")
+    @GET("users/{username}/repos)")
     suspend fun getUserRepositoryList(
         @Path("username") username: String
     ): List<Response<GithubRepositoryResponse>>
