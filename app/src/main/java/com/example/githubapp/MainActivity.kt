@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -19,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.githubapp.ui.theme.GithubAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.composable.picasso.PicassoImage
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
 fun RepositoryList(repositories: List<GithubRepositoryEntity>) {
     Column {
         repositories.map {
-            Text(it.name)
+            RepositoryItem(repository = it)
         }
     }
 }
@@ -73,12 +74,11 @@ fun RepositoryItemPreview() {
 fun RepositoryItem(repository: GithubRepositoryEntity) {
     Row {
         Column {
-            PicassoImage(
-                model = repository.ownerAvatarUrl,
-//                modifier = Modifier.size(160.dp)
-            ) {
-                centerInside()
-            }
+            Image(
+                painter = rememberImagePainter(repository.ownerAvatarUrl),
+                contentDescription = null,
+                modifier = Modifier.size(160.dp)
+            )
             Text(
                 text = repository.name,
                 fontSize = 16.sp

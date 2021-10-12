@@ -35,13 +35,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         useIR = true
+        freeCompilerArgs = ["-Xallow-result-return-type"]
     }
     buildFeatures {
         compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.5.10'
     }
     packagingOptions {
         resources {
@@ -52,7 +49,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -80,6 +77,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 
-//    implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'jp.wasabeef.composable:picasso:1.0.1'
+    implementation 'io.coil-kt:coil-compose:1.4.0'
 }
