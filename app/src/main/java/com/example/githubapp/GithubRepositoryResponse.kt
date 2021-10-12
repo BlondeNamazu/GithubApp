@@ -8,12 +8,16 @@ import kotlinx.serialization.Serializable
 data class GithubRepositoryResponse(
     @SerialName("id") val id: Long,
     @SerialName("name") val name: String,
+    @SerialName("owner_avatar_url") val owner_avatar_url: String,
+    @SerialName("description") val description: String,
     @SerialName("html_url") val htmlUrl: String,
     @SerialName("url") val apiUrl: String,
 ) {
     fun toEntity(): GithubRepositoryEntity = GithubRepositoryEntity(
         id = id,
         name = name,
+        ownerAvatarUrl = Uri.parse(owner_avatar_url),
+        description = description,
         htmlUrl = Uri.parse(htmlUrl),
         apiUrl = Uri.parse(apiUrl)
     )

@@ -1,10 +1,13 @@
 package com.example.githubapp
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -12,9 +15,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.githubapp.ui.theme.GithubAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import jp.wasabeef.composable.picasso.PicassoImage
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -44,6 +51,42 @@ fun RepositoryList(repositories: List<GithubRepositoryEntity>) {
     Column {
         repositories.map {
             Text(it.name)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RepositoryItemPreview() {
+    val repository = GithubRepositoryEntity(
+        id = 0L,
+        name = "Sample repository",
+        ownerAvatarUrl = Uri.parse("https://avatars.githubusercontent.com/u/15728912"),
+        description = "dummy description, this is sample preview",
+        htmlUrl = Uri.EMPTY,
+        apiUrl = Uri.EMPTY
+    )
+    RepositoryItem(repository)
+}
+
+@Composable
+fun RepositoryItem(repository: GithubRepositoryEntity) {
+    Row {
+        Column {
+            PicassoImage(
+                model = repository.ownerAvatarUrl,
+//                modifier = Modifier.size(160.dp)
+            ) {
+                centerInside()
+            }
+            Text(
+                text = repository.name,
+                fontSize = 16.sp
+            )
+            Text(
+                text = repository.description,
+                fontSize = 14.sp
+            )
         }
     }
 }
