@@ -9,13 +9,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,8 +38,8 @@ class MainActivity : ComponentActivity() {
                             by viewModel.userRepositoryList.observeAsState(emptyList())
                     ViewAndRefreshButton(
                         repositories = repositories,
-                        onClickListener = {
-                            viewModel.getUserRepositoryList("BlondeNamazu")
+                        onClickListener = { userName: String ->
+                            viewModel.getUserRepositoryList(userName)
                         }
                     )
                 }
@@ -74,7 +73,8 @@ fun RepositoryItem(repository: GithubRepositoryEntity) {
             modifier = Modifier.size(160.dp)
         )
         Column(
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
                 .padding(bottom = 12.dp)
         ) {
             Text(
@@ -100,15 +100,45 @@ fun RepositoryItem(repository: GithubRepositoryEntity) {
 }
 
 @Composable
-fun ViewAndRefreshButton(repositories: List<GithubRepositoryEntity>, onClickListener: () -> Unit) {
+fun ViewAndRefreshButton(
+    repositories: List<GithubRepositoryEntity>,
+    onClickListener: (userName: String) -> Unit
+) {
     LazyColumn {
         item {
-            Button(onClick = onClickListener) {
-                Text("Update Repositories")
-            }
+            InputField(onClickListener = onClickListener)
         }
         items(repositories) { repository ->
             RepositoryItem(repository = repository)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InputFieldPreview() {
+    InputField(onClickListener = { })
+}
+
+@Composable
+fun InputField(
+    onClickListener: (userName: String) -> Unit
+) {
+    Row {
+        val userName = remember { mutableStateOf("") }
+        TextField(
+            value = userName.value,
+            label = { Text("User Name") },
+            onValueChange = { newName ->
+                userName.value = newName
+            })
+        Button(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(all = 8.dp),
+            onClick = { onClickListener(userName.value) }
+        ) {
+            Text("Search")
         }
     }
 }
