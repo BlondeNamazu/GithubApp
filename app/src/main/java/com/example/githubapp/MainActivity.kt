@@ -107,7 +107,7 @@ fun RepositoryItem(repository: GithubRepositoryEntity) {
         Divider(
             color = Color.Gray,
             thickness = 1.dp,
-            startIndent = 64.dp
+            startIndent = 72.dp
         )
     }
 }
