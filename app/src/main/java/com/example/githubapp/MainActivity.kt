@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,7 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,38 +69,46 @@ fun RepositoryItemPreview() {
 
 @Composable
 fun RepositoryItem(repository: GithubRepositoryEntity) {
-    Row(
-        modifier = Modifier.height(160.dp)
-    ) {
-        Image(
-            painter = rememberImagePainter(repository.ownerAvatarUrl),
-            contentDescription = null,
-            modifier = Modifier.size(160.dp)
-        )
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .padding(bottom = 12.dp)
+    Column(
+        modifier = Modifier
+            .offset(y = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ){
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                text = repository.name,
+            Image(
+                painter = rememberImagePainter(repository.ownerAvatarUrl),
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
                 modifier = Modifier
-                    .offset(x = 8.dp, y = 12.dp)
-                    .fillMaxWidth(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 24.sp
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, Color.Gray, CircleShape)
             )
-            Text(
-                text = repository.description,
-                modifier = Modifier
-                    .offset(x = 8.dp, y = 16.dp)
-                    .fillMaxWidth(),
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 14.sp
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = repository.name,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = repository.description,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    fontSize = 14.sp
+                )
+            }
         }
+        Divider(
+            color = Color.Gray,
+            thickness = 1.dp,
+            startIndent = 64.dp
+        )
     }
 }
 
@@ -104,7 +117,12 @@ fun ViewAndRefreshButton(
     repositories: List<GithubRepositoryEntity>,
     onClickListener: (userName: String) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement
+            .spacedBy(12.dp)
+    ) {
         item {
             InputField(onClickListener = onClickListener)
         }
@@ -124,7 +142,9 @@ fun InputFieldPreview() {
 fun InputField(
     onClickListener: (userName: String) -> Unit
 ) {
-    Row {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         val userName = remember { mutableStateOf("") }
         TextField(
             value = userName.value,
@@ -134,8 +154,7 @@ fun InputField(
             })
         Button(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(all = 8.dp),
+                .align(Alignment.CenterVertically),
             onClick = { onClickListener(userName.value) }
         ) {
             Text("Search")
